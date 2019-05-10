@@ -4,6 +4,7 @@
 #include "State.h"
 #include "Game.h"
 #include "Pipe.h"
+#include "Land.h"
 
 using namespace std;
 using namespace sf;
@@ -13,13 +14,12 @@ class GameState : public State
 private:
 	GameDataRef _data;
 	Sprite _background;
-	Pipe* pipe;
+	Pipe *pipe;
+	Land *land;
 	Clock clock;
 
 public:
 	GameState(GameDataRef data);
-	~GameState();
-
 	void Init();
 	void HandleInput();
 	void Update(float dt);
