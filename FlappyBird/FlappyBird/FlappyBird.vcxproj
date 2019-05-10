@@ -157,6 +157,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="Bird.h" />
     <ClInclude Include="DEFINITIONS.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameOverState.h" />
@@ -172,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Bird.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="GameState.cpp" />

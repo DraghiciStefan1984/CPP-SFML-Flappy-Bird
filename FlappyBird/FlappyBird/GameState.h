@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Pipe.h"
 #include "Land.h"
+#include "Bird.h"
 
 using namespace std;
 using namespace sf;
@@ -14,8 +15,9 @@ class GameState : public State
 private:
 	GameDataRef _data;
 	Sprite _background;
-	Pipe *pipe;
-	Land *land;
+	Pipe* pipe;
+	Land* land;
+	Bird* bird;
 	Clock clock;
 
 public:

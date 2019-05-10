@@ -1,9 +1,12 @@
 #include "pch.h"
 #include "Game.h"
 #include "SplashState.h"
+#include <stdlib.h>
+#include <time.h>
 
 Game::Game(int width, int height, string title)
 {
+	srand(time(NULL));
 	_data->window.create(VideoMode(width, height), title, Style::Close | Style::Titlebar);
 	_data->machine.AddState(StateRef(new SplashState(this->_data)));
 	this->Run();
