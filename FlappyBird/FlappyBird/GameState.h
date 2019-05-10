@@ -7,16 +7,15 @@
 using namespace std;
 using namespace sf;
 
-class SplashState: public State
+class GameState : public State
 {
 private:
 	GameDataRef _data;
-	Clock _clock;
 	Sprite _background;
 
 public:
-	SplashState(GameDataRef data);
-	~SplashState();
+	GameState(GameDataRef data);
+	~GameState();
 
 	void Init();
 	void HandleInput();

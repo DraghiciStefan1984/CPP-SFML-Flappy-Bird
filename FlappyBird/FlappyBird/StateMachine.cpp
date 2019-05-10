@@ -31,10 +31,11 @@ void StateMachine::ProcessStateChanges()
 			if (this->_isReplacing) this->_states.pop();
 			else this->_states.top()->Pause();
 		}
-		this->_states.push(move(this->_newState));
+
+		this->_states.push(std::move(this->_newState));
 		this->_states.top()->Init();
 		this->_isAdding = false;
 	}
 }
 
-StateRef & StateMachine::GetActiveState() { return this->_states.top(); }
+StateRef &StateMachine::GetActiveState() { return this->_states.top(); }

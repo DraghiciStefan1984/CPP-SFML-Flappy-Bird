@@ -13,8 +13,8 @@ struct GameData
 {
 	StateMachine machine;
 	RenderWindow window;
-	AssetManager assetManager;
-	InputManager inputManager;
+	AssetManager assets;
+	InputManager input;
 };
 
 typedef shared_ptr<GameData> GameDataRef;
@@ -22,12 +22,11 @@ typedef shared_ptr<GameData> GameDataRef;
 class Game
 {
 private:
-	float dt = 1.0f / 60.0f;
+	const float dt = 1.0f / 60.0f;
 	Clock _clock;
-	GameDataRef _data = make_shared<GameData>();
+	GameDataRef _data = std::make_shared<GameData>();
 	void Run();
 
 public:
 	Game(int width, int height, string title);
-	~Game();
 };

@@ -9,8 +9,6 @@ Game::Game(int width, int height, string title)
 	this->Run();
 }
 
-Game::~Game() {}
-
 void Game::Run()
 {
 	float newTime, frameTime, interpolation;
@@ -32,7 +30,6 @@ void Game::Run()
 			this->_data->machine.GetActiveState()->Update(dt);
 			accumulator -= dt;
 		}
-
 		interpolation = accumulator / dt;
 		this->_data->machine.GetActiveState()->Draw(interpolation);
 	}
