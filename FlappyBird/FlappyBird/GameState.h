@@ -14,6 +14,7 @@ private:
 	GameDataRef _data;
 	Sprite _background;
 	Pipe* pipe;
+	Clock clock;
 
 public:
 	GameState(GameDataRef data);

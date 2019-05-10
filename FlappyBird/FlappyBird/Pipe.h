@@ -18,4 +18,8 @@ public:
 	~Pipe();
 
 	void DrawPipes();
+	void SpawnBottomPipe();
+	void SpawnTopPipe();
+	void SpawnInvisiblePipe();
+	void MovePipes(float dt);
 };
