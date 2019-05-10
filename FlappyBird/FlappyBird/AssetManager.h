@@ -12,8 +12,8 @@ private:
 	map<string, Font> _fonts;
 
 public:
-	AssetManager() { }
-	~AssetManager() { }
+	AssetManager();
+	~AssetManager();
 
 	void LoadTexture(string name, string fileName);
 	Texture &GetTexture(string name);

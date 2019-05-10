@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "Game.h"
+#include "SplashState.h"
 
 Game::Game(int width, int height, string title)
 {
 	_data->window.create(VideoMode(width, height), title, Style::Close | Style::Titlebar);
+	_data->machine.AddState(StateRef(new SplashState(this->_data)));
 	this->Run();
 }
 
