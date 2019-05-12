@@ -22,6 +22,7 @@ void GameState::Init()
 	bird = new Bird(_data);
 
 	_background.setTexture(this->_data->assets.GetTexture("Game Background"));
+	_gameState = GameStates::eReady;
 }
 
 void GameState::HandleInput()
@@ -34,27 +35,44 @@ void GameState::HandleInput()
 
 		if (this->_data->input.IsSpriteClicked(this->_background, Mouse::Left, this->_data->window))
 		{
-			bird->Tap();
+			if (GameStates::eGameOver != _gameState)
+			{
+				_gameState = GameStates::ePlaying;
+				bird->Tap();
+			}
 		}
 	}
 }
 
 void GameState::Update(float dt)
 {
-	pipe->MovePipes(dt);
-	land->MoveLand(dt);
-
-	if (clock.getElapsedTime().asSeconds() > PIPE_SPAWN_FREQUENCY)
+	if (GameStates::eGameOver != _gameState)
 	{
-		pipe->RandomisePipeOffset();
-		pipe->SpawnInvisiblePipe();
-		pipe->SpawnBottomPipe();
-		pipe->SpawnTopPipe();
-		clock.restart();
+		bird->Animate(dt);
+		land->MoveLand(dt);
 	}
 
-	bird->Animate(dt);
-	bird->Update(dt);
+	if (GameStates::ePlaying == _gameState)
+	{
+		pipe->MovePipes(dt);
+
+		if (clock.getElapsedTime().asSeconds() > PIPE_SPAWN_FREQUENCY)
+		{
+			pipe->RandomisePipeOffset();
+			pipe->SpawnInvisiblePipe();
+			pipe->SpawnBottomPipe();
+			pipe->SpawnTopPipe();
+			clock.restart();
+		}
+
+		bird->Update(dt);
+		vector<Sprite> landSprites = land->GetSprites();
+
+		for (int i = 0; i < landSprites.size(); i++)
+		{
+			if (collision.CheckSpriteCollision(bird->GetSprite(), landSprites.at(i))) _gameState = GameStates::eGameOver;
+		}
+	}
 }
 
 void GameState::Draw(float dt)

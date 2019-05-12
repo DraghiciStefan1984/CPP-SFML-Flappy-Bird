@@ -6,6 +6,7 @@
 #include "Pipe.h"
 #include "Land.h"
 #include "Bird.h"
+#include "Collision.h"
 
 using namespace std;
 using namespace sf;
@@ -19,6 +20,8 @@ private:
 	Land* land;
 	Bird* bird;
 	Clock clock;
+	Collision collision;
+	int _gameState;
 
 public:
 	GameState(GameDataRef data);

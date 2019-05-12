@@ -24,4 +24,5 @@ public:
 	void Animate(float dt);
 	void Update(float dt);
 	void Tap();
+	const Sprite& GetSprite() const;
 };

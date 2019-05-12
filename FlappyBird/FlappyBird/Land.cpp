@@ -32,3 +32,5 @@ void Land::MoveLand(float dt)
 }
 
 void Land::DrawLand() { for (unsigned short int i = 0; i < _landSprites.size(); i++) this->_data->window.draw(_landSprites.at(i)); }
+
+const vector<Sprite> & Land::GetSprites() const { return _landSprites; }

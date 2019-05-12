@@ -17,4 +17,5 @@ public:
 
 	void MoveLand(float dt);
 	void DrawLand();
+	const vector<Sprite> & GetSprites() const;
 };
