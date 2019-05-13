@@ -25,4 +25,5 @@ public:
 	void MovePipes(float dt);
 	void DrawPipes();
 	void RandomisePipeOffset();
+	const vector<Sprite> & GetSprites() const;
 };

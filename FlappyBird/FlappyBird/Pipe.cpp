@@ -47,3 +47,5 @@ void Pipe::MovePipes(float dt)
 void Pipe::DrawPipes() { for (unsigned short int i = 0; i < pipeSprites.size(); i++) this->_data->window.draw(pipeSprites.at(i)); }
 
 void Pipe::RandomisePipeOffset() { _pipeSpawnYOffset = rand() % (_landHeight + 1); }
+
+const vector<Sprite>& Pipe::GetSprites() const { return pipeSprites; }

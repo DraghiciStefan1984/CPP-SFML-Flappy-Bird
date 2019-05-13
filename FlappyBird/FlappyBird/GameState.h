@@ -7,6 +7,7 @@
 #include "Land.h"
 #include "Bird.h"
 #include "Collision.h"
+#include "Flash.h"
 
 using namespace std;
 using namespace sf;
@@ -19,9 +20,12 @@ private:
 	Pipe* pipe;
 	Land* land;
 	Bird* bird;
+	Flash* flash;
 	Clock clock;
 	Collision collision;
 	int _gameState;
+	RectangleShape _gameOverFlash;
+	bool _flashOn;
 
 public:
 	GameState(GameDataRef data);

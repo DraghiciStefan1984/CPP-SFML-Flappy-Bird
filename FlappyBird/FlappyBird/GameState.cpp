@@ -20,6 +20,7 @@ void GameState::Init()
 	pipe = new Pipe(_data);
 	land = new Land(_data);
 	bird = new Bird(_data);
+	flash = new Flash(_data);
 
 	_background.setTexture(this->_data->assets.GetTexture("Game Background"));
 	_gameState = GameStates::eReady;
@@ -66,13 +67,21 @@ void GameState::Update(float dt)
 		}
 
 		bird->Update(dt);
-		vector<Sprite> landSprites = land->GetSprites();
 
+		vector<Sprite> landSprites = land->GetSprites();
 		for (int i = 0; i < landSprites.size(); i++)
 		{
-			if (collision.CheckSpriteCollision(bird->GetSprite(), landSprites.at(i))) _gameState = GameStates::eGameOver;
+			if (collision.CheckSpriteCollision(bird->GetSprite(), 0.625f, landSprites.at(i), 1.0f)) _gameState = GameStates::eGameOver;
+		}
+
+		vector<Sprite> pipeSprites = pipe->GetSprites();
+		for (int i = 0; i < pipeSprites.size(); i++)
+		{
+			if (collision.CheckSpriteCollision(bird->GetSprite(), 0.625f, pipeSprites.at(i), 1.0f)) _gameState = GameStates::eGameOver;
 		}
 	}
+
+	if (GameStates::eGameOver == _gameState) flash->Show(dt);
 }
 
 void GameState::Draw(float dt)
@@ -82,5 +91,6 @@ void GameState::Draw(float dt)
 	pipe->DrawPipes();
 	land->DrawLand();
 	bird->Draw();
+	flash->Draw();
 	this->_data->window.display();
 }
