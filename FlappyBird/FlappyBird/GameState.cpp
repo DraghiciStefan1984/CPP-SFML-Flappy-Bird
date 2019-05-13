@@ -2,6 +2,7 @@
 #include "SplashState.h"
 #include "GameState.h"
 #include "DEFINITIONS.h"
+#include "GameOverState.h"
 #include <iostream>
 
 GameState::GameState(GameDataRef data) : _data(data) {}
@@ -16,14 +17,19 @@ void GameState::Init()
 	this->_data->assets.LoadTexture("Bird Frame 2", BIRD_FRAME_2_FILEPATH);
 	this->_data->assets.LoadTexture("Bird Frame 3", BIRD_FRAME_3_FILEPATH);
 	this->_data->assets.LoadTexture("Bird Frame 4", BIRD_FRAME_4_FILEPATH);
+	this->_data->assets.LoadTexture("Scoring Pipe", SCORING_PIPE_FILEPATH);
+	this->_data->assets.LoadFont("Flappy Font", FLAPPY_FONT_FILEPATH);
 
 	pipe = new Pipe(_data);
 	land = new Land(_data);
 	bird = new Bird(_data);
 	flash = new Flash(_data);
+	hud = new HUD(_data);
 
 	_background.setTexture(this->_data->assets.GetTexture("Game Background"));
 	_gameState = GameStates::eReady;
+	_score = 0;
+	hud->UpdateScore(_score);
 }
 
 void GameState::HandleInput()
@@ -63,6 +69,7 @@ void GameState::Update(float dt)
 			pipe->SpawnInvisiblePipe();
 			pipe->SpawnBottomPipe();
 			pipe->SpawnTopPipe();
+			pipe->SpawnScoringPipe();
 			clock.restart();
 		}
 
@@ -71,17 +78,43 @@ void GameState::Update(float dt)
 		vector<Sprite> landSprites = land->GetSprites();
 		for (int i = 0; i < landSprites.size(); i++)
 		{
-			if (collision.CheckSpriteCollision(bird->GetSprite(), 0.625f, landSprites.at(i), 1.0f)) _gameState = GameStates::eGameOver;
+			if (collision.CheckSpriteCollision(bird->GetSprite(), 0.625f, landSprites.at(i), 1.0f))
+			{
+				_gameState = GameStates::eGameOver;
+				clock.restart();
+			}
 		}
 
 		vector<Sprite> pipeSprites = pipe->GetSprites();
 		for (int i = 0; i < pipeSprites.size(); i++)
 		{
-			if (collision.CheckSpriteCollision(bird->GetSprite(), 0.625f, pipeSprites.at(i), 1.0f)) _gameState = GameStates::eGameOver;
+			if (collision.CheckSpriteCollision(bird->GetSprite(), 0.625f, pipeSprites.at(i), 1.0f))
+			{
+				_gameState = GameStates::eGameOver;
+				clock.restart();
+			}
+		}
+
+		if (GameStates::ePlaying == _gameState)
+		{
+			vector<Sprite> & scoringSprites = pipe->GetScoringSprites();
+			for (int i = 0; i < scoringSprites.size(); i++)
+			{
+				if (collision.CheckSpriteCollision(bird->GetSprite(), 0.625f, scoringSprites.at(i), 1.0f))
+				{
+					_score++;
+					hud->UpdateScore(_score);
+					scoringSprites.erase(scoringSprites.begin() + i);
+				}
+			}
 		}
 	}
 
-	if (GameStates::eGameOver == _gameState) flash->Show(dt);
+	if (GameStates::eGameOver == _gameState)
+	{
+		flash->Show(dt);
+		if (clock.getElapsedTime().asSeconds() > TIME_BEFORE_GAME_OVER_APPEARS) _data->machine.AddState(StateRef(new GameOverState(_data)), true);
+	}
 }
 
 void GameState::Draw(float dt)
@@ -92,5 +125,6 @@ void GameState::Draw(float dt)
 	land->DrawLand();
 	bird->Draw();
 	flash->Draw();
+	hud->Draw();
 	this->_data->window.display();
 }

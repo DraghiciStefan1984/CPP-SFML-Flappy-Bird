@@ -42,6 +42,17 @@ void Pipe::MovePipes(float dt)
 			pipeSprites.at(i).move(-movement, 0);
 		}
 	}
+
+	for (int i = 0; i < scoringPipes.size(); i++)
+	{
+		if (scoringPipes.at(i).getPosition().x < 0 - scoringPipes.at(i).getLocalBounds().width) scoringPipes.erase(scoringPipes.begin() + i);
+		else
+		{
+			Vector2f position = scoringPipes.at(i).getPosition();
+			float movement = PIPE_MOVEMENT_SPEED * dt;
+			scoringPipes.at(i).move(-movement, 0);
+		}
+	}
 }
 
 void Pipe::DrawPipes() { for (unsigned short int i = 0; i < pipeSprites.size(); i++) this->_data->window.draw(pipeSprites.at(i)); }
@@ -49,3 +60,12 @@ void Pipe::DrawPipes() { for (unsigned short int i = 0; i < pipeSprites.size(); 
 void Pipe::RandomisePipeOffset() { _pipeSpawnYOffset = rand() % (_landHeight + 1); }
 
 const vector<Sprite>& Pipe::GetSprites() const { return pipeSprites; }
+
+void Pipe::SpawnScoringPipe()
+{
+	Sprite sprite(this->_data->assets.GetTexture("Scoring Pipe"));
+	sprite.setPosition(this->_data->window.getSize().x, 0);
+	scoringPipes.push_back(sprite);
+}
+
+vector<Sprite>& Pipe::GetScoringSprites() { return scoringPipes; }
